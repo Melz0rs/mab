@@ -8,3 +8,5 @@ services:
     image: "simple_proj_worker:latest"
     ports:
       - "5001:5000"
+  redis:
+    image: "redis:alpine"
