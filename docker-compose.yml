@@ -19,9 +19,8 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: 'db'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'password'
       MYSQL_ROOT_PASSWORD: 'password'
+    command: --default-authentication-plugin=mysql_native_password
     ports:
       - '3306:3306'
     expose:
@@ -30,6 +29,6 @@ services:
       - data_volume:/var/lib/mysql
       - ./db/migrations/:/docker-entrypoint-initdb.d/
 
-  volumes:
-    data_volume:
+volumes:
+  data_volume:
 
