@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS votes (
+    vote_id INT NOT NULL,
+    PRIMARY KEY (vote_id)
+)  ENGINE=INNODB;
+

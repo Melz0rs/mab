@@ -29,7 +29,19 @@ services:
       - '3306'
     volumes:
       - ./db/data_volume:/var/lib/mysql
-      - ./db/migrations/:/docker-entrypoint-initdb.d/
+      - ./db/initialize/:/docker-entrypoint-initdb.d/
+
+  migration:
+    image: mathewhall/mysql_migration
+    volumes:
+      - ./db/migrations:/docker-entrypoint-migrations.d
+    links:
+      - db
+    environment:
+      MYSQL_HOST: db
+      MYSQL_DATABASE: db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
 
 volumes:
   data_volume:
