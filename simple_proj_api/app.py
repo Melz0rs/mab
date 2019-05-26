@@ -3,7 +3,7 @@ import requests
 import redis
 
 app = Flask(__name__)
-worker_host = 'http://worker:5000'
+worker_host = 'http://api-worker:5000'
 cache = redis.Redis(host='redis', port=6379)
 
 @app.route('/')
@@ -16,6 +16,7 @@ def hello_world():
 
 @app.route('/notification/add')
 def add_notification():
+    app.logger.info("adding notification")
     cache.incr('notifications_count')
 
 

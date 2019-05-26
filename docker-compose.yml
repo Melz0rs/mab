@@ -4,9 +4,12 @@ services:
     image: "simple_proj_api:latest"
     ports:
       - "5000:5000"
+
+  api-worker:
+    image: "simple_proj_api_worker:latest"
+
   worker:
     image: "simple_proj_worker:latest"
-    ports:
-      - "5001:5000"
+
   redis:
     image: "redis:alpine"
