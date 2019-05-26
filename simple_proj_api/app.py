@@ -9,6 +9,7 @@ worker_host = 'http://worker:5000'
 def hello_world():
     # async/await?
     response = requests.get(worker_host)
+    app.logger.info("hello world")
     return response.text
 
 
