@@ -26,3 +26,5 @@ if __name__ == '__main__':
             prev_count = new_count
 
             logger.info(f"new count: {new_count}")
+
+

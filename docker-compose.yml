@@ -13,3 +13,23 @@ services:
 
   redis:
     image: "redis:alpine"
+
+  db:
+    image: "mysql"
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - data_volume:/var/lib/mysql
+      - ./db/migrations/:/docker-entrypoint-initdb.d/
+
+  volumes:
+    data_volume:
+
