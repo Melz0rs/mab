@@ -15,7 +15,7 @@ services:
     image: "redis:alpine"
 
   db:
-    image: "mysql"
+    image: mysql
     restart: always
     environment:
       MYSQL_DATABASE: 'db'
@@ -27,7 +27,15 @@ services:
       - '3306'
     volumes:
       - data_volume:/var/lib/mysql
+
+  migration:
+    image: mysql_migration
+    volumes:
       - ./db/migrations/:/docker-entrypoint-initdb.d/
+    links:
+      - db
+    depends_on:
+      - db
 
 volumes:
   data_volume:
