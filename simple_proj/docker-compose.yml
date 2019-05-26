@@ -1,0 +1,10 @@
+version: '3'
+services:
+  api:
+    image: "simple_proj_api:latest"
+    ports:
+      - "5000:5000"
+  worker:
+    image: "simple_proj_worker:latest"
+    ports:
+      - "5001:5000"
