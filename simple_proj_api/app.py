@@ -1,10 +1,11 @@
-from flask import Flask
+from flask import Flask, jsonify
 import requests
 import redis
 
 app = Flask(__name__)
 worker_host = 'http://api-worker:5000'
 cache = redis.Redis(host='redis', port=6379)
+
 
 @app.route('/')
 def hello_world():
@@ -14,10 +15,13 @@ def hello_world():
     return response.text
 
 
-@app.route('/notification/add')
+@app.route('/notifications/add')
 def add_notification():
     app.logger.info("adding notification")
     cache.incr('notifications_count')
+
+    response = jsonify(success=True)
+    return response
 
 
 if __name__ == '__main__':
