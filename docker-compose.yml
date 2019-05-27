@@ -5,9 +5,6 @@ services:
     ports:
       - "5000:5000"
 
-  api-worker:
-    image: "simple_proj_api_worker:latest"
-
   worker:
     image: "simple_proj_worker:latest"
 
