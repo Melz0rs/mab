@@ -1,10 +1,12 @@
 import pika
+import atexit
 
 
 class PikaWrapper:
 
     def __init__(self, host):
         self.__initialize_connection(host)
+        atexit.register(self.__close_connection)
 
     def declare_queue(self, queue_name=None):
         # if queueName is None:
@@ -28,4 +30,8 @@ class PikaWrapper:
 
     def __initialize_connection(self, host):
         connection = pika.BlockingConnection(pika.ConnectionParameters(host))
+        self.connection = connection
         self.channel = connection.channel()
+
+    def __close_connection(self):
+        self.connection.close()
