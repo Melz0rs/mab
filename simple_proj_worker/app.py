@@ -1,6 +1,6 @@
 import redis
 import logging
-import common.PikaWrapper as PikaWrapper
+from common.PikaWrapper import PikaWrapper
 import common.configurations as configurations
 
 cache = redis.Redis(host='redis', port=6379)
