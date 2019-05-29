@@ -3,7 +3,7 @@ import logging
 from common.PikaWrapper import PikaWrapper
 import common.configurations as configurations
 
-cache = redis.Redis(host='redis', port=6379)
+# cache = redis.Redis(host='redis', port=6379)
 pika_wrapper = PikaWrapper(configurations.rabbit_mq_config['host_name'])
 
 
