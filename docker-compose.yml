@@ -4,9 +4,13 @@ services:
     image: "simple_proj_api:latest"
     ports:
       - "5000:5000"
+    depends_on:
+      - rabbitmq
 
   worker:
     image: "simple_proj_worker:latest"
+    depends_on:
+      - rabbitmq
 
   redis:
     image: "redis:alpine"
@@ -32,7 +36,7 @@ services:
     image: mathewhall/mysql_migration
     volumes:
       - ./db/migrations:/docker-entrypoint-migrations.d
-    links:
+    depends_on:
       - db
     environment:
       MYSQL_HOST: db
@@ -45,6 +49,8 @@ services:
     command: rabbitmq-server
     ports:
       - "15672:15672"
+      - "5672:5672"
+
     volumes:
       - ./volumes/rabbitmq:/var/lib/rabbitmq
 

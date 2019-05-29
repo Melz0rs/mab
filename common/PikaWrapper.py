@@ -16,7 +16,7 @@ class PikaWrapper:
 
         self.channel.exchange_declare(exchange_type)
 
-    def send_message(self, message, routing_key='', exchange_name=''):
+    def send_message(self, message, routing_key=None, exchange_name=None):
         self.channel.basic_publish(exchange=exchange_name,
                                    routing_key=routing_key,
                                    body=message)

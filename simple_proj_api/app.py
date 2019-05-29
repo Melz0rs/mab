@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 import requests
 import redis
-import common.PikaWrapper as PikaWrapper
+from common.PikaWrapper import PikaWrapper
 import common.configurations as configurations
 
 app = Flask(__name__)
@@ -29,11 +29,15 @@ def add_notification():
 
 @app.route('/comments/add')
 def add_comment():
-    comment = {
-        'value': 'Hello world'
-    }
+    comment = 'hello world'
+    #           '{
+    #     #     'value': 'Hello world'
+    #     # }
 
     pika_wrapper.send_message(comment)
+
+    response = jsonify(success=True)
+    return response
 
 
 def __initialize_queue():
