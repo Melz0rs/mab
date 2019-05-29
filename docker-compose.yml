@@ -40,6 +40,15 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: password
 
+  rabbitmq:
+    image: rabbitmq:management
+    command: rabbitmq-server
+    ports:
+      - "15672:15672"
+    expose:
+      - "5672"
+      - "15672"
+
 volumes:
   data_volume:
 
