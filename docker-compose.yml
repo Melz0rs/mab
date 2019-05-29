@@ -45,9 +45,8 @@ services:
     command: rabbitmq-server
     ports:
       - "15672:15672"
-    expose:
-      - "5672"
-      - "15672"
+    volumes:
+      - ./volumes/rabbitmq:/var/lib/rabbitmq
 
 volumes:
   data_volume:

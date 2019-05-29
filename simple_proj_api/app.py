@@ -1,10 +1,13 @@
 from flask import Flask, jsonify
 import requests
 import redis
+import common.PikaWrapper as PikaWrapper
+import common.configurations as configurations
 
 app = Flask(__name__)
 worker_host = 'http://api-worker:5000'
 cache = redis.Redis(host='redis', port=6379)
+pika_wrapper = PikaWrapper(configurations.rabbit_mq_config['host_name'])
 
 
 @app.route('/')
@@ -24,6 +27,23 @@ def add_notification():
     return response
 
 
+@app.route('/comments/add')
+def add_comment():
+    comment = {
+        'value': 'Hello world'
+    }
+
+    pika_wrapper.send_message(comment)
+
+
+def __initialize_queue():
+    pika_wrapper.declare_queue(configurations.rabbit_mq_config['comments_queue_name'])
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
+
+    __initialize_queue()
+
+
 

@@ -1,7 +1,10 @@
 import redis
 import logging
+import common.PikaWrapper as PikaWrapper
+import common.configurations as configurations
 
 cache = redis.Redis(host='redis', port=6379)
+pika_wrapper = PikaWrapper(configurations.rabbit_mq_config['host_name'])
 
 
 def get_module_logger(mod_name):
@@ -15,16 +18,22 @@ def get_module_logger(mod_name):
     return logger
 
 
-if __name__ == '__main__':
-    prev_count = 0
-    logger = get_module_logger("__name__")
+def process_comment(comment):
+    logger.info(f"processing comment: {comment}")
 
-    while True:
-        new_count = cache.get("notifications_count")
 
-        if prev_count != new_count:
-            prev_count = new_count
+def __initialize_queue():
+    pika_wrapper.declare_queue(configurations.rabbit_mq_config['comments_queue_name'])
 
-            logger.info(f"new count: {new_count}")
+
+pika_wrapper.start_receiving_messages(queue_name=configurations.rabbit_mq_config['comments_queue_name'],
+                                      callback_fn=process_comment)
+
+
+logger = get_module_logger("__name__")
+__initialize_queue()
+
+
+
 
 
