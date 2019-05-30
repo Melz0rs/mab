@@ -1,3 +1,6 @@
+import sys
+sys.path.append('../')
+
 from flask import Flask, jsonify
 import requests
 import redis
@@ -34,7 +37,7 @@ def add_comment():
     #     #     'value': 'Hello world'
     #     # }
 
-    pika_wrapper.send_message(comment)
+    pika_wrapper.send_message(comment, routing_key=configurations.rabbit_mq_config['comments_queue_name'])
 
     response = jsonify(success=True)
     return response
@@ -45,9 +48,9 @@ def __initialize_queue():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
-
     __initialize_queue()
+
+    app.run(debug=True, host='0.0.0.0')
 
 
 

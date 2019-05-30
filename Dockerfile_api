@@ -1,7 +1,10 @@
 FROM tiangolo/uwsgi-nginx-flask:python3.6
 
 RUN mkdir -p app
-COPY . /app
+
+COPY ./simple_proj_api /app
+COPY ./common /common
+
 WORKDIR /app
 
 EXPOSE 5000

@@ -1,9 +1,12 @@
+import sys
+sys.path.append('../')
+
 import redis
 import logging
 from common.PikaWrapper import PikaWrapper
 import common.configurations as configurations
 
-# cache = redis.Redis(host='redis', port=6379)
+cache = redis.Redis(host='redis', port=6379)
 pika_wrapper = PikaWrapper(configurations.rabbit_mq_config['host_name'])
 
 
@@ -18,21 +21,19 @@ def get_module_logger(mod_name):
     return logger
 
 
-def process_comment(comment):
-    logger.info(f"processing comment: {comment}")
+def process_comment(ch, method, properties, data):
+    logger.info(f"processing comment: {data}")
 
 
 def __initialize_queue():
     pika_wrapper.declare_queue(configurations.rabbit_mq_config['comments_queue_name'])
 
 
-pika_wrapper.start_receiving_messages(queue_name=configurations.rabbit_mq_config['comments_queue_name'],
-                                      callback_fn=process_comment)
-
-
 logger = get_module_logger("__name__")
 __initialize_queue()
 
+pika_wrapper.start_receiving_messages(queue_name=configurations.rabbit_mq_config['comments_queue_name'],
+                                      callback_fn=process_comment)
 
 
 

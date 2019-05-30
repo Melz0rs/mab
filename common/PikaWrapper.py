@@ -18,15 +18,19 @@ class PikaWrapper:
 
         self.channel.exchange_declare(exchange_type)
 
-    def send_message(self, message, routing_key=None, exchange_name=None):
+    def send_message(self, message, routing_key='', exchange_name=''):
         self.channel.basic_publish(exchange=exchange_name,
                                    routing_key=routing_key,
                                    body=message)
 
-    def start_receiving_messages(self, queue_name, callback_fn, auto_ack=True):
+    def start_receiving_messages(self, queue_name, callback_fn, message_count=1, auto_ack=True):
+        self.channel.basic_qos(prefetch_count=message_count)
+
         self.channel.basic_consume(queue=queue_name,
                                    auto_ack=auto_ack,
                                    on_message_callback=callback_fn)
+
+        self.channel.start_consuming()
 
     def __initialize_connection(self, host):
         connection = pika.BlockingConnection(pika.ConnectionParameters(host))
