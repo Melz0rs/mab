@@ -1,21 +1,21 @@
 version: '3'
 services:
-  api:
-    image: "simple_proj_api:latest"
-    restart: unless-stopped
-    ports:
-      - "5000:5000"
-    depends_on:
-      - rabbitmq
-
-  worker:
-    image: "simple_proj_worker:latest"
-    restart: unless-stopped
-    depends_on:
-      - rabbitmq
-
-  redis:
-    image: "redis:alpine"
+#  api:
+#    image: "simple_proj_api:latest"
+#    restart: unless-stopped
+#    ports:
+#      - "5000:5000"
+#    depends_on:
+#      - rabbitmq
+#
+#  worker:
+#    image: "simple_proj_worker:latest"
+#    restart: unless-stopped
+#    depends_on:
+#      - rabbitmq
+#
+#  redis:
+#    image: "redis:alpine"
 
 #  db:
 #    image: mysql
@@ -46,20 +46,20 @@ services:
 #      MYSQL_USER: user
 #      MYSQL_PASSWORD: password
 
-  rabbitmq:
-    image: rabbitmq:management
-    command: rabbitmq-server
-    ports:
-      - "5672:5672"   
-      - "15672:15672"
-    healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:15672"]
-        interval: 30s
-        timeout: 10s
-        retries: 5
-
-    volumes:
-      - ./volumes/rabbitmq:/var/lib/rabbitmq
+#  rabbitmq:
+#    image: rabbitmq:management
+#    command: rabbitmq-server
+#    ports:
+#      - "5672:5672"
+#      - "15672:15672"
+#    healthcheck:
+#        test: ["CMD", "curl", "-f", "http://localhost:15672"]
+#        interval: 30s
+#        timeout: 10s
+#        retries: 5
+#
+#    volumes:
+#      - ./volumes/rabbitmq:/var/lib/rabbitmq
 
   zookeeper:
     image: 'bitnami/zookeeper:latest'
