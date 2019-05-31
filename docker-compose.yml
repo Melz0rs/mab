@@ -1,80 +1,65 @@
 version: '3'
 services:
-#  api:
-#    image: "simple_proj_api:latest"
-#    restart: unless-stopped
-#    ports:
-#      - "5000:5000"
-#    depends_on:
-#      - rabbitmq
-#
-#  worker:
-#    image: "simple_proj_worker:latest"
-#    restart: unless-stopped
-#    depends_on:
-#      - rabbitmq
-#
-#  redis:
-#    image: "redis:alpine"
-
-#  db:
-#    image: mysql
-#    restart: always
-#    environment:
-#      MYSQL_DATABASE: 'db'
-#      MYSQL_USER: 'user'
-#      MYSQL_PASSWORD: 'password'
-#      MYSQL_ROOT_PASSWORD: 'password'
-#    command: --default-authentication-plugin=mysql_native_password
-#    ports:
-#      - '3306:3306'
-#    expose:
-#      - '3306'
-#    volumes:
-#      - ./db/data_volume:/var/lib/mysql
-#      - ./db/initialize/:/docker-entrypoint-initdb.d/
-#
-#  migration:
-#    image: mathewhall/mysql_migration
-#    volumes:
-#      - ./db/migrations:/docker-entrypoint-migrations.d
-#    depends_on:
-#      - db
-#    environment:
-#      MYSQL_HOST: db
-#      MYSQL_DATABASE: db
-#      MYSQL_USER: user
-#      MYSQL_PASSWORD: password
-
-#  rabbitmq:
-#    image: rabbitmq:management
-#    command: rabbitmq-server
-#    ports:
-#      - "5672:5672"
-#      - "15672:15672"
-#    healthcheck:
-#        test: ["CMD", "curl", "-f", "http://localhost:15672"]
-#        interval: 30s
-#        timeout: 10s
-#        retries: 5
-#
-#    volumes:
-#      - ./volumes/rabbitmq:/var/lib/rabbitmq
-
-  zookeeper:
-    image: 'bitnami/zookeeper:latest'
+  api:
+    image: "simple_proj_api:latest"
+    restart: unless-stopped
     ports:
-      - '2181:2181'
-    environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
+      - "5000:5000"
+    depends_on:
+      - rabbitmq
 
-  kafka:
-    image: 'bitnami/kafka:latest'
-    ports:
-      - '9092:9092'
+  worker:
+    image: "simple_proj_worker:latest"
+    restart: unless-stopped
+    depends_on:
+      - rabbitmq
+
+  redis:
+    image: "redis:alpine"
+
+  db:
+    image: mysql
+    restart: always
     environment:
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      - ALLOW_PLAINTEXT_LISTENER=yes
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - ./db/data_volume:/var/lib/mysql
+      - ./db/initialize/:/docker-entrypoint-initdb.d/
+
+  migration:
+    image: mathewhall/mysql_migration
+    volumes:
+      - ./db/migrations:/docker-entrypoint-migrations.d
+    depends_on:
+      - db
+    environment:
+      MYSQL_HOST: db
+      MYSQL_DATABASE: db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+
+  rabbitmq:
+    image: rabbitmq:management
+    command: rabbitmq-server
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:15672"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+
+    volumes:
+      - ./volumes/rabbitmq:/var/lib/rabbitmq
 
 volumes:
   data_volume:
